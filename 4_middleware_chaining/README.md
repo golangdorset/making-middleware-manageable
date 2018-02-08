@@ -19,6 +19,15 @@ curl -H "x-api-key: foo-bar-baz" localhost:8000/hello
 ```
 
 ## Things to Note
+### The Middleware Type
+Since part two we've been using the same signature for our middlewares. You'll
+notice here that we've created a custom type for this signature:
+```go
+type middleware func(http.Handler) http.Handler
+```
+This allows us to create variables and function arguments that will always match
+the signature we need for middleware.
+
 ### Middleware Chaining
 You'll notice that we are now using the `chain` function to wrap multiple
 middlewares around the http handler:

@@ -1,6 +1,6 @@
 # Making Middleware Manageable - Part One
 To kick things off we've created a simple HTTP server with a single endpoint of
-/hello. A request to this endpoint returns a friendly greeting.
+`/hello`. A request to this endpoint returns a friendly greeting.
 
 ## Usage
 To run the application:
@@ -15,7 +15,7 @@ curl localhost:8000/hello
 
 ## Things to Note
 ### HTTP Handlers
-The function which handles requests to /hello is defined as:
+The function which handles requests to `/hello` is defined as:
 ```go
 func helloHandler() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -40,4 +40,4 @@ func (f HandlerFunc) ServeHTTP(w ResponseWriter, r *Request) {
 }
 ```
 It simply takes the response (`w`) and request (`r`) parameters and runs the
-original function (`1`).
+original function (`f`).

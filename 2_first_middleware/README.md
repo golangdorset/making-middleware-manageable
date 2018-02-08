@@ -1,5 +1,5 @@
 # Making Middleware Manageable - Part Two
-Ok so for part two we've realised that we need to secure the /hello endpoint
+Ok so for part two we've realised that we need to secure the `/hello` endpoint
 of our application. We'll do this with an API key.
 
 ## Usage
