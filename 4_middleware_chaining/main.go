@@ -60,9 +60,8 @@ func logger(h http.Handler) http.Handler {
 // chain iterates over a list of middlewares, executes them, and returns the
 // originally intended handler function.
 func chain(h http.Handler, m ...middleware) http.Handler {
-	middlewares := append(([]middleware)(nil), m...)
-	for i := range middlewares {
-		h = middlewares[len(middlewares)-1-i](h)
+	for i := range m {
+		h = m[len(m)-1-i](h)
 	}
 
 	return h
