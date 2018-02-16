@@ -41,30 +41,6 @@ Go allows us to define a middleware as a simple function that takes a http handl
     })
   }
 
-* Wrapping Middleware
-
-After defining our middleware we just wrap the original handler function
-
-  checkAPIKey(helloHandler())
-
-But this can get messy with lots and lots of middlewares
-
-  yeyAnother(logger(checkAPIKey(helloHandler())))
-
-* Middleware Chaining
-
-An elegant solution to handling multiple middlewares is to chain them with a helper function
-
-  type middleware func(http.Handler) http.Handler
-
-  func chain(h http.Handler, m ...middleware) http.Handler {
-    for i := range m {
-      h = m[len(m)-1-i](h)
-    }
-    
-    return h
-  }
-
 * Demo Time
 
 To the code!
