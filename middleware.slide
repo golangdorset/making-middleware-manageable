@@ -1,0 +1,75 @@
+Making Middleware Manageable
+Golang Dorset
+
+Dan Richards
+Software Engineer, Lush Digital
+
+https://danmrichards.com
+https://github.com/danmrichards
+
+* Intro to HTTP Handlers
+
+Go has a great set of packages in the standard library, one of which is `net/http`.
+
+It allows us to define handler functions which respond to HTTP requests, like so:
+
+  func helloHandler() http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+      w.Write([]byte("Hello Golang Dorset!"))
+    })
+  }
+
+* Why Middleware?
+
+- Web applications often need to perform actions before or after requests are processed
+- Often these actions need to be carried out for multiple resources of the application
+- This can result in code duplication and poor seperation of concerns
+
+* Middleware in Go
+
+Go allows us to define a middleware as a simple function that takes a http handler, runs some code, and then executes the original handler:
+
+  func checkAPIKey(h http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+      if r.Header.Get(apiKeyHeader) != apiKey {
+        w.WriteHeader(http.StatusUnauthorized)
+        w.Write([]byte("Unauthorised"))
+        return
+      }
+      
+      h.ServeHTTP(w, r)
+    })
+  }
+
+* Wrapping Middleware
+
+After defining our middleware we just wrap the original handler function
+
+  checkAPIKey(helloHandler())
+
+But this can get messy with lots and lots of middlewares
+
+  yeyAnother(logger(checkAPIKey(helloHandler())))
+
+* Middleware Chaining
+
+An elegant solution to handling multiple middlewares is to chain them with a helper function
+
+  type middleware func(http.Handler) http.Handler
+
+  func chain(h http.Handler, m ...middleware) http.Handler {
+    for i := range m {
+      h = m[len(m)-1-i](h)
+    }
+    
+    return h
+  }
+
+* Demo Time
+
+To the code!
+
+* Companion Code
+All the code from this talk can be found on the Golang Dorset Github
+
+https://github.com/golangdorset/making-middleware-manageable
